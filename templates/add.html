@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="jumbotron">
+  <h1>Esemény hozzáadása</h1>
+  <p>Adj hozzá egy eseményt:</p>
+  
+  <form method="POST">
+    {{ form.hidden_tag() }}
+    <div class="form-group">
+    {{ form.name.label() }} {{ form.name(class="form-control") }}
+  </div>
+    <br>
+    <div class="form-group">
+    {{ form.date.label }} {{ form.date(class="form-control datepicker") }}
+  </div>
+    <br>
+    <div class="form-group">
+    {{ form.sport_type.label }} {{ form.sport_type(class="custom-select" ) }}
+  </div>
+    <br>
+    <div class="form-group">
+      {{ form.event_type.label }} {{ form.event_type(class="custom-select" ) }}
+    </div>
+    <br>
+    <div id="num_of_groups_wrapper">
+        {{ form.num_of_groups.label }} {{ form.num_of_groups(class="custom-select") }}
+        <div class="alert alert-info" role="alert">
+          Csak "Csoportkörös majd egyeneskiesés rendszer" esetén szükséges megadni.
+      </div>
+      </div>
+      <br>
+    <div>
+    {{ form.submit(class="btn btn-primary", type="submit", style="margin: 10px 15px") }}
+  </div>
+  </form>
+</div>
+</div>
+
+
+{% endblock %}

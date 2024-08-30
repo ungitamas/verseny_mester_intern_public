@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="jumbotron" style="background: url();">
+  <h1>
+    {% if event.sport_type=="football" %} 
+    ⚽️ 
+    {% elif event.sport_type=="basketball" %}
+    🏀 
+    {% elif event.sport_type=="handball" %}
+    🤾🏻
+    {% elif event.sport_type=="volleyball" %}
+    🏐
+    {% endif %} 
+    {{event.name}} kezelése 
+    {% if event.sport_type=="football" %} 
+    ⚽️ 
+    {% elif event.sport_type=="basketball" %}
+    🏀 
+    {% elif event.sport_type=="handball" %}
+    🤾🏻
+    {% elif event.sport_type=="volleyball" %}
+    🏐
+    {% endif %} 
+</h1>
+
+    
+    {% if not existing_groups %}
+    <form method="POST">
+      {{ form.hidden_tag() }}
+      <p>
+        {{ form.name.label }}<br>
+        {{ form.name(size=32) }}
+      </p>
+      <p>{{ form.submit() }}</p>
+    </form>
+    {% endif %}
+    
+    <ol class="list-group list-group-numbered">
+        {% for team in teams %}
+        <li>
+          {{ team.name }}
+          <form method="POST" action="{{ url_for('del_team') }}" style="display:inline;">
+            <input type="hidden" name="team_id" value="{{ team.id }}">
+            <input type="hidden" name="event_id" value="{{ event.id }}">
+            {% if not existing_groups %}
+            <button type="submit" class="btn btn-danger">Törlés</button>
+            {% endif %}
+          </form>
+        </li>
+        {% endfor %}
+    </ol>
+
+    {% if event.event_type=='round_robin' and teams|length >= 2%}
+    
+    <a href="{{ url_for('create_groups', event_id=event.id) }}" class="btn btn-primary">Körmékőzések</a>
+    {% endif %}
+
+
+    {% if event.event_type=='knockout' %}
+    {% if teams|length == 2 or teams|length == 4 or teams|length == 8 or teams|length == 16 or teams|length == 32 %}
+    <a href="{{ url_for('create_groups', event_id=event.id) }}" class="btn btn-primary">Irány az első kör</a>
+    {% else %}
+    <div class="alert alert-warning" role="alert">
+      Az első kieséses szakasz létrohozásához 2, 4, 8, 16 vagy 32 csapat szükséges
+    </div>
+    {% endif %}
+    {% endif %}
+
+    
+    {% if event.event_type=='group_knockout' %}
+    {% if teams|length >= event.num_of_groups * 2 %}
+    <a href="{{ url_for('create_groups', event_id=event.id) }}" class="btn btn-primary">Csoportbeosztások</a>
+    {% else %}
+    <div class="alert alert-warning" role="alert">
+      A csoportok létrehozásához legalább {{ event.num_of_groups * 2 }} csapat szükséges.
+    </div>
+    {% endif %}
+    {% endif %}
+</div>
+
+
+{% endblock %}
+
+    
