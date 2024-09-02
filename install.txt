@@ -1,1 +1,3 @@
-pip install -r requirements.txt
+py -m pip install --upgrade pip
+py -m pip install Flask
+py -m pip install Flask-SQLAlchemy Flask-Migrate Flask-WTF WTForms
